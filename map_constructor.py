@@ -11,10 +11,9 @@ from folium import Marker, Map, PolyLine
 import osmnx as ox
 import os
 import sys
-import logging
 from path import Path
-from argparse import ArgumentParser
 from collections import defaultdict
+from util import *
 
 cities_locations = {
     "Kaliningrad": {
@@ -63,26 +62,7 @@ cities_locations = {
     }
 }
 
-def setup_argparser():
-    parser = ArgumentParser(description="Simple graph construction")
-    parser.add_argument("city", type=str, help="City to work with")
-    # parser.add_argument("f_in", type=str, help="File with json")
-    # parser.add_argument("f_out", type=str, help="File to put json with text")
 
-    return parser
-
-def setup_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-
-    logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-    consoleHandler = logging.StreamHandler()
-    consoleHandler.setFormatter(logFormatter)
-    
-    logger.addHandler(consoleHandler)
-
-    return logger
-    
 logger = setup_logging()
 
 def transform_from_json(row):
