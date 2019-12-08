@@ -1,4 +1,5 @@
 import logging
+import json
 from argparse import ArgumentParser
 
 def setup_argparser():
@@ -8,11 +9,16 @@ def setup_argparser():
     return parser
 
 
-def setup_logging():
+def setup_logging(city=None):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    logFormatter = None
+    if city is not None:
+        logFormatter = logging.Formatter("%(asctime)s %(message)s")
+    else:
+        logFormatter = logging.Formatter(f"%(asctime)s {city} %(message)s")
+    
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
     
@@ -40,3 +46,18 @@ class Attraction:
             'links_to': self.links_to,
             'links_from': len(self.links_from)
         })
+
+class Link:
+    __slots__ = "location_id", "links_from", "links_to"
+
+    def __init__(self, location_id, links_from, links_to):
+        self.location_id = location_id
+        self.links_from = links_from
+        self.links_to = links_to
+
+    def to_serializable(self):
+        return {
+            "id": self.location_id,
+            "links_from": self.links_from,
+            "links_to": self.links_to
+        }
