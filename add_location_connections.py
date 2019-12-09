@@ -13,8 +13,6 @@ import json
 import ast
 from util import *
 
-logger = setup_logging()
-
 def has_node_with_title(nodes, title):
     for node in nodes:
         if node.title == title:
@@ -139,7 +137,7 @@ if __name__ == "__main__":
     PATH_TO_DATA = Path(f"data/{city}")
     path_f_in = PATH_TO_DATA / f"{city}-finalized.json"
     path_f_info = PATH_TO_DATA / "attractions.json"
-    path_f_out = PATH_TO_DATA / "finilized.json"
+    path_f_out = PATH_TO_DATA / "finalized.json"
 
     if not os.path.exists(path_f_in):
         logger.error(f"File passed as input doesn't exist: {path_f_in}")

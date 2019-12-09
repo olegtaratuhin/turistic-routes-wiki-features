@@ -1,6 +1,8 @@
 import logging
+import logging.config
 import json
 from argparse import ArgumentParser
+
 
 def setup_argparser():
     parser = ArgumentParser(description="Enrich initial structure with links to other places")
@@ -10,14 +12,33 @@ def setup_argparser():
 
 
 def setup_logging(city=None):
-    logger = logging.getLogger()
+    logging.config.dictConfig({
+        'version': 1,
+        'disable_existing_loggers': True,
+        'formatters': {
+            'standard': {
+                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            },
+        },
+        'handlers': {
+            'default': {
+                'level':'INFO',
+                'class':'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['default'],
+                'level': 'INFO',
+                'propagate': True
+            }
+        }
+    })
+    
+    logger = logging.getLogger(city)
     logger.setLevel(logging.INFO)
 
-    logFormatter = None
-    if city is not None:
-        logFormatter = logging.Formatter("%(asctime)s %(message)s")
-    else:
-        logFormatter = logging.Formatter(f"%(asctime)s {city} %(message)s")
+    logFormatter = logging.Formatter("%(asctime)s %(message)s")
     
     consoleHandler = logging.StreamHandler()
     consoleHandler.setFormatter(logFormatter)
